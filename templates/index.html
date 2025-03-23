@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Blur App - Mini Project</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        img {
+            border: 2px solid black;
+            margin-top: 10px;
+            width: 80%;
+            max-width: 800px;
+        }
+        input[type="range"] {
+            width: 300px;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function updateBlur(value) {
+            fetch('/update_blur', {
+                method: 'POST',
+                body: new URLSearchParams({ 'blur': value }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(response => response.json())
+              .then(data => console.log("Blur level:", data.blur_level))
+              .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Face Blur App - Mini Project</h1>
+    <img src="{{ url_for('video_feed') }}" id="video-stream">
+    
+    <div>
+        <label for="blur-slider">Blur Level: </label>
+        <input type="range" id="blur-slider" min="1" max="99" step="2" value="30" oninput="updateBlur(this.value)">
+    </div>
+</body>
+</html>
